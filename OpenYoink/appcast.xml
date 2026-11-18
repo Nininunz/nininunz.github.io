@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <!-- Stable releases signed with this fork's update key. -->
+    <channel>
+        <title>Clerestory Updates</title>
+        <link>https://nininunz.github.io/OpenYoink/appcast.xml</link>
+        <description>Updates for Clerestory, based on OpenYoink.</description>
+        <language>en</language>
+        <item>
+            <title>Version 1.0.3</title>
+            <pubDate>Tue, 17 Nov 2026 21:12:46 -0600</pubDate>
+            <sparkle:version>58</sparkle:version>
+            <sparkle:shortVersionString>1.0.3</sparkle:shortVersionString>
+            <enclosure url="https://github.com/Nininunz/OpenYoink/releases/download/v1.0.3/Clerestory-1.0.3.dmg" sparkle:edSignature="HrQ6eduTKCcqUGe5i85z9NySgKvlNEI7elTHJ3nquGxYQigZk7WckfwPnhepzCo9SoyVI8JDETIYUYMGLLthBg==" length="7125396" type="application/octet-stream" />
+        </item>
+        <item>
+            <title>Version 1.0.2</title>
+            <pubDate>Tue, 17 Nov 2026 20:59:39 -0600</pubDate>
+            <sparkle:version>57</sparkle:version>
+            <sparkle:shortVersionString>1.0.2</sparkle:shortVersionString>
+            <enclosure url="https://github.com/Nininunz/OpenYoink/releases/download/v1.0.2/Clerestory-1.0.2.dmg" sparkle:edSignature="g/7LZtX9g4vvI7J/cNzotJIQCLsXW9mo2qbbmr76CqoKMzIZCHohMBhTuE+hpysVXcPvHBVrQj6bwReCxOCGCw==" length="7126086" type="application/octet-stream" />
+        </item>
+        <item>
+            <title>Version 1.0.1</title>
+            <pubDate>Tue, 17 Nov 2026 20:12:39 -0600</pubDate>
+            <sparkle:version>56</sparkle:version>
+            <sparkle:shortVersionString>1.0.1</sparkle:shortVersionString>
+            <enclosure url="https://github.com/Nininunz/OpenYoink/releases/download/v1.0.1/Clerestory-1.0.1.dmg" sparkle:edSignature="LqALCyyoMhRUiepI/M7/K+NOYRvXh+oHZK+elPIhbv2YO6XEmhxlcCaeRdv6bUUrl+kgBRN5kJumxW50gs+LCw==" length="7112380" type="application/octet-stream" />
+        </item>
+        <item>
+            <title>Version 1.0.0</title>
+            <pubDate>Tue, 17 Nov 2026 18:07:01 -0600</pubDate>
+            <sparkle:version>55</sparkle:version>
+            <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
+            <enclosure url="https://github.com/Nininunz/OpenYoink/releases/download/v1.0.0/OpenYoink-1.0.0.dmg" sparkle:edSignature="Xqta57Ki/GMzeFcxa7nY0xs1W7wY9iZ1PFchC5QpVOrEfyf6D8Nq4VudvY/qo+nTHToifNvRCTM9BubnPNcDAg==" length="6003422" type="application/octet-stream" />
+        </item>
+    </channel>
+</rss>
