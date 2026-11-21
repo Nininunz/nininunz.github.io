@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clerestory</title>
+<meta name="description" content="Clerestory puts a file shelf and configurable shortcuts in a panel at the top of your Mac's screen. Free and open source for macOS 15 and later.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Clerestory">
+<meta property="og:description" content="A modular panel for your Mac.">
+<meta property="og:image" content="https://nininunz.github.io/Clerestory/AppIcon-512.png">
+<link rel="icon" type="image/png" href="AppIcon-64.png">
+<link rel="apple-touch-icon" href="AppIcon-256.png">
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --text: #15202e;
+    --muted: #556375;
+    --line: #dde3ea;
+    --accent: #2f6fb3;
+    --accent-text: #ffffff;
+    --hero-top: #1a3a55;
+    --hero-bottom: #0c1826;
+    --hero-text: #eef4fa;
+    --hero-muted: #a9bccf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d141d;
+      --surface: #151f2b;
+      --text: #e6edf4;
+      --muted: #9aabbd;
+      --line: #243243;
+      --accent: #6aa8e8;
+      --accent-text: #08121c;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  a { color: var(--accent); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  /* Hero */
+  .hero {
+    background: radial-gradient(120% 90% at 50% 0%, var(--hero-top), var(--hero-bottom) 70%);
+    color: var(--hero-text);
+    padding: 64px 0 0;
+    overflow: hidden;
+  }
+  .hero .wrap { text-align: center; }
+  .hero img.icon { width: 128px; height: 128px; filter: drop-shadow(0 12px 24px rgba(0,0,0,.45)); }
+  .hero h1 { font-size: clamp(40px, 7vw, 60px); line-height: 1.05; margin: 16px 0 8px; letter-spacing: -0.02em; }
+  .hero .tagline { font-size: clamp(20px, 3vw, 24px); margin: 0 0 12px; font-weight: 500; }
+  .hero .lede { color: var(--hero-muted); max-width: 640px; margin: 0 auto 28px; }
+  .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .button {
+    display: inline-block; padding: 12px 24px; border-radius: 12px;
+    font-weight: 600; text-decoration: none; font-size: 17px;
+  }
+  .button.primary { background: #ffffff; color: #0f2236; }
+  .button.secondary { color: var(--hero-text); border: 1px solid rgba(255,255,255,.3); }
+  .button:hover { filter: brightness(.94); }
+  .fineprint { color: var(--hero-muted); font-size: 14px; margin: 16px 0 0; }
+
+  /* Illustration of the top of a screen */
+  .screen {
+    position: relative; margin: 48px auto 0; max-width: 880px; height: 300px;
+    border-radius: 18px 18px 0 0; border: 1px solid rgba(255,255,255,.14); border-bottom: 0;
+    background: linear-gradient(160deg, #3d6c94 0%, #6b8fb0 35%, #b99ab3 70%, #e2b38f 100%);
+    overflow: hidden;
+  }
+  .menubar {
+    height: 26px; background: rgba(20,28,38,.35); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: space-between; padding: 0 14px;
+    font-size: 12px; color: rgba(255,255,255,.85);
+  }
+  .menubar .dots { display: flex; gap: 14px; }
+  .menubar .dots span { width: 34px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.45); }
+  .menubar .dots span:first-child { width: 14px; }
+  .notch {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 170px; height: 30px; background: #000; border-radius: 0 0 14px 14px;
+  }
+  .notch .count {
+    position: absolute; right: 12px; top: 7px; min-width: 18px; height: 16px; padding: 0 5px;
+    border-radius: 8px; background: rgba(255,255,255,.18); color: #fff; font-size: 11px; line-height: 16px; text-align: center; font-weight: 600;
+  }
+  .panel {
+    position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
+    width: min(560px, 92%); padding: 14px; border-radius: 22px;
+    background: rgba(14,20,28,.82); backdrop-filter: blur(18px);
+    box-shadow: 0 20px 50px rgba(0,0,0,.4); border: 1px solid rgba(255,255,255,.08);
+    text-align: left;
+  }
+  .tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+  .tab { font-size: 12px; color: rgba(255,255,255,.75); padding: 5px 11px; border-radius: 999px; background: rgba(255,255,255,.07); }
+  .tab.on { background: rgba(255,255,255,.2); color: #fff; }
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .card { border-radius: 12px; background: rgba(255,255,255,.07); padding: 10px; height: 118px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; }
+  .card .thumb { flex: 1; border-radius: 8px; }
+  .card .label { font-size: 11px; color: rgba(255,255,255,.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .t-doc { background: linear-gradient(#f4f6f9, #dfe5ec); }
+  .t-img { background: linear-gradient(135deg, #f0a56b, #c55d86 60%, #5c4fa8); }
+  .t-link { background: linear-gradient(135deg, #3a7bd5, #5fc3e4); }
+  .t-text { background: repeating-linear-gradient(#e9edf2 0 6px, #cfd7e0 6px 8px); }
+
+  /* Sections */
+  section { padding: 72px 0; }
+  section + section { border-top: 1px solid var(--line); }
+  h2 { font-size: 30px; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .intro { color: var(--muted); margin: 0 0 32px; max-width: 680px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .feature { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; }
+  .feature h3 { margin: 0 0 6px; font-size: 18px; }
+  .feature p { margin: 0; color: var(--muted); font-size: 16px; }
+  kbd {
+    font: 600 14px -apple-system, BlinkMacSystemFont, sans-serif; padding: 1px 6px; border-radius: 6px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--text); white-space: nowrap;
+  }
+  ul.plain { padding-left: 20px; margin: 0; color: var(--muted); }
+  ul.plain li { margin-bottom: 8px; }
+  ul.plain li strong { color: var(--text); }
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+
+  footer { border-top: 1px solid var(--line); padding: 32px 0 48px; color: var(--muted); font-size: 14px; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 12px; }
+
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .wrap { padding: 0 16px; }
+    .hero { padding-top: 44px; }
+    .screen { height: 250px; margin-top: 36px; }
+    .notch { width: 120px; }
+    .menubar .dots span:nth-child(n+3) { display: none; }
+    .cards { grid-template-columns: repeat(3, 1fr); }
+    .cards .card:nth-child(4) { display: none; }
+    .card { height: 100px; }
+    section { padding: 52px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <img class="icon" src="AppIcon-256.png" alt="" width="128" height="128">
+    <h1>Clerestory</h1>
+    <p class="tagline">A modular panel for your Mac.</p>
+    <p class="lede">A file shelf and handy shortcuts in a panel at the top of your screen. Drop files, folders, text or links on the Shelf while you work, then drag them where they need to go.</p>
+    <div class="actions">
+      <a class="button primary" href="https://github.com/Nininunz/Clerestory/releases/latest">Download for Mac</a>
+      <a class="button secondary" href="https://github.com/Nininunz/Clerestory">View on GitHub</a>
+    </div>
+    <p class="fineprint">Free and open source · macOS 15 or later · Signed and notarized</p>
+
+    <div class="screen" aria-hidden="true">
+      <div class="menubar">
+        <div class="dots"><span></span><span></span><span></span><span></span></div>
+        <div class="dots"><span></span><span></span></div>
+      </div>
+      <div class="notch"><span class="count">4</span></div>
+      <div class="panel">
+        <div class="tabs">
+          <span class="tab on">Shelf</span><span class="tab">Quick Settings</span><span class="tab">Battery</span>
+        </div>
+        <div class="cards">
+          <div class="card"><div class="thumb t-doc"></div><div class="label">Proposal.pdf</div></div>
+          <div class="card"><div class="thumb t-img"></div><div class="label">Sunset.jpg</div></div>
+          <div class="card"><div class="thumb t-link"></div><div class="label">github.com</div></div>
+          <div class="card"><div class="thumb t-text"></div><div class="label">Meeting notes</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <h2>Everything within reach</h2>
+      <p class="intro">Clerestory lives in the menu bar and opens from the top center of any display.</p>
+      <div class="grid">
+        <div class="feature">
+          <h3>Shelf</h3>
+          <p>A holding spot for files, folders, text, links and images. It points to your files instead of copying them. Search with <kbd>⌘F</kbd>, preview with Space and undo a removal with <kbd>⌘Z</kbd>.</p>
+        </div>
+        <div class="feature">
+          <h3>Open it your way</h3>
+          <p>Point at or click the top center of the screen, drag a file there, or press <kbd>⌘⇧Space</kbd>. Press it twice quickly to save your clipboard to the Shelf. Pin the panel to keep it open.</p>
+        </div>
+        <div class="feature">
+          <h3>Notch companion</h3>
+          <p>On Macs with a notch, a small counter beside the camera shows how many items are on your Shelf.</p>
+        </div>
+        <div class="feature">
+          <h3>Battery</h3>
+          <p>Charge, power draw over the last two minutes, and battery health. Switch Low Power Mode from the panel with the optional helper.</p>
+        </div>
+        <div class="feature">
+          <h3>Quick Settings</h3>
+          <p>Arrange the panel's module shortcuts and get to common settings without opening a window.</p>
+        </div>
+        <div class="feature">
+          <h3>Experimental modules</h3>
+          <p>Turn on Transfers, Timer, System Status, Now Playing, Clipboard History and AI Usage in Settings → Modules.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap two">
+      <div>
+        <h2>Careful with your files</h2>
+        <p class="intro">A regular drop only remembers where a file is. Nothing gets moved, and removing it from the Shelf never deletes the original.</p>
+        <ul class="plain">
+          <li><strong>Hold ⌘ to move a file in.</strong> Clerestory keeps a checked copy and puts the original in the Trash, where you can restore it.</li>
+          <li><strong>It keeps track of originals.</strong> If a file is renamed or moved, its Shelf item still finds it.</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Private by design</h2>
+        <p class="intro">Your Shelf stays on your Mac.</p>
+        <ul class="plain">
+          <li><strong>No account, analytics or telemetry.</strong> Clerestory goes online only to check for updates, and you can turn that off.</li>
+          <li><strong>Sandboxed.</strong> It only touches files you drag in or pick, and needs no Accessibility or Input Monitoring permission.</li>
+          <li><strong>Clipboard History is opt-in.</strong> It records nothing until you turn on Record Clipboard, and skips copies password managers mark as private.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Get started</h2>
+      <p class="intro">Download the DMG from the <a href="https://github.com/Nininunz/Clerestory/releases/latest">latest release</a>, open it and drag Clerestory to Applications. Open Clerestory from Applications; a short tour shows you around the first time. Updates arrive through <strong>Check for Updates…</strong> in the menu bar icon's menu.</p>
+      <a class="button primary" style="background: var(--accent); color: var(--accent-text);" href="https://github.com/Nininunz/Clerestory/releases/latest">Download Clerestory</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <nav>
+      <a href="https://github.com/Nininunz/Clerestory">Source code</a>
+      <a href="https://github.com/Nininunz/Clerestory#quick-start">Quick start</a>
+      <a href="https://github.com/Nininunz/Clerestory/releases">Release notes</a>
+      <a href="https://github.com/Nininunz/Clerestory/issues">Report an issue</a>
+    </nav>
+    <p>Clerestory is based on <a href="https://github.com/MuQY1818/OpenYoink">OpenYoink</a> by weijue and contributors and is released under the <a href="https://github.com/Nininunz/Clerestory/blob/main/LICENSE">MIT License</a>.</p>
+  </div>
+</footer>
+
+</body>
+</html>
