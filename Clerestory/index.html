@@ -20,10 +20,11 @@
     --line: #dde3ea;
     --accent: #2f6fb3;
     --accent-text: #ffffff;
-    --hero-top: #1a3a55;
+    --hero-top: #1d4161;
     --hero-bottom: #0c1826;
     --hero-text: #eef4fa;
     --hero-muted: #a9bccf;
+    --shot-shadow: 0 24px 60px rgba(12, 24, 38, .28);
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -34,6 +35,7 @@
       --line: #243243;
       --accent: #6aa8e8;
       --accent-text: #08121c;
+      --shot-shadow: 0 24px 60px rgba(0, 0, 0, .55);
     }
   }
   * { box-sizing: border-box; }
@@ -46,19 +48,21 @@
   }
   a { color: var(--accent); }
   .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+  h1, h2, h3, p { text-wrap: pretty; }
+  h1, h2, .tagline, .hero .lede, .fineprint { text-wrap: balance; }
 
   /* Hero */
   .hero {
     background: radial-gradient(120% 90% at 50% 0%, var(--hero-top), var(--hero-bottom) 70%);
     color: var(--hero-text);
     padding: 64px 0 0;
-    overflow: hidden;
   }
-  .hero .wrap { text-align: center; }
-  .hero img.icon { width: 128px; height: 128px; filter: drop-shadow(0 12px 24px rgba(0,0,0,.45)); }
-  .hero h1 { font-size: clamp(40px, 7vw, 60px); line-height: 1.05; margin: 16px 0 8px; letter-spacing: -0.02em; }
+  /* flow-root keeps the screenshot's negative margin inside the hero, so it overlaps the next section. */
+  .hero .wrap { text-align: center; display: flow-root; }
+  .hero img.icon { width: 112px; height: 112px; filter: drop-shadow(0 12px 24px rgba(0,0,0,.45)); }
+  .hero h1 { font-size: clamp(40px, 7vw, 60px); line-height: 1.05; margin: 14px 0 8px; letter-spacing: -0.02em; }
   .hero .tagline { font-size: clamp(20px, 3vw, 24px); margin: 0 0 12px; font-weight: 500; }
-  .hero .lede { color: var(--hero-muted); max-width: 640px; margin: 0 auto 28px; }
+  .hero .lede { color: var(--hero-muted); max-width: 600px; margin: 0 auto 28px; }
   .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
   .button {
     display: inline-block; padding: 12px 24px; border-radius: 12px;
@@ -66,50 +70,18 @@
   }
   .button.primary { background: #ffffff; color: #0f2236; }
   .button.secondary { color: var(--hero-text); border: 1px solid rgba(255,255,255,.3); }
+  .button.accent { background: var(--accent); color: var(--accent-text); }
   .button:hover { filter: brightness(.94); }
   .fineprint { color: var(--hero-muted); font-size: 14px; margin: 16px 0 0; }
 
-  /* Illustration of the top of a screen */
-  .screen {
-    position: relative; margin: 48px auto 0; max-width: 880px; height: 300px;
-    border-radius: 18px 18px 0 0; border: 1px solid rgba(255,255,255,.14); border-bottom: 0;
-    background: linear-gradient(160deg, #3d6c94 0%, #6b8fb0 35%, #b99ab3 70%, #e2b38f 100%);
-    overflow: hidden;
+  /* Real panel captures. The PNGs are 2x; the panel's corner radius is 22pt. */
+  .shot {
+    display: block; height: auto; max-width: 100%;
+    border-radius: 22px; box-shadow: var(--shot-shadow), 0 0 0 1px rgba(255,255,255,.07);
   }
-  .menubar {
-    height: 26px; background: rgba(20,28,38,.35); backdrop-filter: blur(8px);
-    display: flex; align-items: center; justify-content: space-between; padding: 0 14px;
-    font-size: 12px; color: rgba(255,255,255,.85);
-  }
-  .menubar .dots { display: flex; gap: 14px; }
-  .menubar .dots span { width: 34px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.45); }
-  .menubar .dots span:first-child { width: 14px; }
-  .notch {
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 170px; height: 30px; background: #000; border-radius: 0 0 14px 14px;
-  }
-  .notch .count {
-    position: absolute; right: 12px; top: 7px; min-width: 18px; height: 16px; padding: 0 5px;
-    border-radius: 8px; background: rgba(255,255,255,.18); color: #fff; font-size: 11px; line-height: 16px; text-align: center; font-weight: 600;
-  }
-  .panel {
-    position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
-    width: min(560px, 92%); padding: 14px; border-radius: 22px;
-    background: rgba(14,20,28,.82); backdrop-filter: blur(18px);
-    box-shadow: 0 20px 50px rgba(0,0,0,.4); border: 1px solid rgba(255,255,255,.08);
-    text-align: left;
-  }
-  .tabs { display: flex; gap: 6px; margin-bottom: 12px; }
-  .tab { font-size: 12px; color: rgba(255,255,255,.75); padding: 5px 11px; border-radius: 999px; background: rgba(255,255,255,.07); }
-  .tab.on { background: rgba(255,255,255,.2); color: #fff; }
-  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .card { border-radius: 12px; background: rgba(255,255,255,.07); padding: 10px; height: 118px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; }
-  .card .thumb { flex: 1; border-radius: 8px; }
-  .card .label { font-size: 11px; color: rgba(255,255,255,.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .t-doc { background: linear-gradient(#f4f6f9, #dfe5ec); }
-  .t-img { background: linear-gradient(135deg, #f0a56b, #c55d86 60%, #5c4fa8); }
-  .t-link { background: linear-gradient(135deg, #3a7bd5, #5fc3e4); }
-  .t-text { background: repeating-linear-gradient(#e9edf2 0 6px, #cfd7e0 6px 8px); }
+  .hero .shot { width: 492px; margin: 52px auto -150px; position: relative; box-shadow: 0 40px 90px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.09); }
+  .hero + main > section:first-child { padding-top: 222px; }
+  .caption { color: var(--muted); font-size: 14px; text-align: center; margin: 14px 0 0; }
 
   /* Sections */
   section { padding: 72px 0; }
@@ -128,20 +100,23 @@
   ul.plain li { margin-bottom: 8px; }
   ul.plain li strong { color: var(--text); }
   .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+  .spotlight { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 492px); gap: 48px; align-items: center; }
+  .spotlight .shot { width: 492px; }
 
   footer { border-top: 1px solid var(--line); padding: 32px 0 48px; color: var(--muted); font-size: 14px; }
   footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 12px; }
 
+  @media (max-width: 860px) {
+    .spotlight { grid-template-columns: 1fr; gap: 28px; }
+    .spotlight .shot { margin: 0 auto; }
+  }
   @media (max-width: 640px) {
     body { font-size: 16px; }
     .wrap { padding: 0 16px; }
     .hero { padding-top: 44px; }
-    .screen { height: 250px; margin-top: 36px; }
-    .notch { width: 120px; }
-    .menubar .dots span:nth-child(n+3) { display: none; }
-    .cards { grid-template-columns: repeat(3, 1fr); }
-    .cards .card:nth-child(4) { display: none; }
-    .card { height: 100px; }
+    .hero .shot { margin: 40px auto -90px; border-radius: 16px; }
+    .hero + main > section:first-child { padding-top: 140px; }
+    .shot { border-radius: 16px; }
     section { padding: 52px 0; }
   }
 </style>
@@ -150,34 +125,16 @@
 
 <header class="hero">
   <div class="wrap">
-    <img class="icon" src="AppIcon-256.png" alt="" width="128" height="128">
+    <img class="icon" src="AppIcon-256.png" alt="" width="112" height="112">
     <h1>Clerestory</h1>
     <p class="tagline">A modular panel for your Mac.</p>
-    <p class="lede">A file shelf and handy shortcuts in a panel at the top of your screen. Drop files, folders, text or links on the Shelf while you work, then drag them where they need to go.</p>
+    <p class="lede">A file shelf and handy shortcuts at the top of your screen. Drop files, folders, text or links on the Shelf while you work, then drag them wherever they need to go.</p>
     <div class="actions">
       <a class="button primary" href="https://github.com/Nininunz/Clerestory/releases/latest">Download for Mac</a>
       <a class="button secondary" href="https://github.com/Nininunz/Clerestory">View on GitHub</a>
     </div>
     <p class="fineprint">Free and open source · macOS 15 or later · Signed and notarized</p>
-
-    <div class="screen" aria-hidden="true">
-      <div class="menubar">
-        <div class="dots"><span></span><span></span><span></span><span></span></div>
-        <div class="dots"><span></span><span></span></div>
-      </div>
-      <div class="notch"><span class="count">4</span></div>
-      <div class="panel">
-        <div class="tabs">
-          <span class="tab on">Shelf</span><span class="tab">Quick Settings</span><span class="tab">Battery</span>
-        </div>
-        <div class="cards">
-          <div class="card"><div class="thumb t-doc"></div><div class="label">Proposal.pdf</div></div>
-          <div class="card"><div class="thumb t-img"></div><div class="label">Sunset.jpg</div></div>
-          <div class="card"><div class="thumb t-link"></div><div class="label">github.com</div></div>
-          <div class="card"><div class="thumb t-text"></div><div class="label">Meeting notes</div></div>
-        </div>
-      </div>
-    </div>
+    <img class="shot" src="shelf.png" width="492" height="390" alt="The Shelf in the Clerestory panel, holding images, documents, a spreadsheet and a folder, with a search field and a Select button.">
   </div>
 </header>
 
@@ -200,18 +157,32 @@
           <p>On Macs with a notch, a small counter beside the camera shows how many items are on your Shelf.</p>
         </div>
         <div class="feature">
-          <h3>Battery</h3>
-          <p>Charge, power draw over the last two minutes, and battery health. Switch Low Power Mode from the panel with the optional helper.</p>
+          <h3>Quick Settings</h3>
+          <p>Arrange the panel's module shortcuts and change common settings without opening a window.</p>
         </div>
         <div class="feature">
-          <h3>Quick Settings</h3>
-          <p>Arrange the panel's module shortcuts and get to common settings without opening a window.</p>
+          <h3>Messages</h3>
+          <p>Short notes appear below the panel or the notch, for example when an item is already on the Shelf. VoiceOver reads them as they arrive.</p>
         </div>
         <div class="feature">
           <h3>Experimental modules</h3>
           <p>Turn on Transfers, Timer, System Status, Now Playing, Clipboard History and AI Usage in Settings → Modules.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap spotlight">
+      <div>
+        <h2>Battery at a glance</h2>
+        <p class="intro">Charge, time remaining, power draw over the last two minutes, and battery health.</p>
+        <ul class="plain">
+          <li><strong>Low battery warnings.</strong> At 20% or less, the notch shows a red battery icon and a message appears once, then again only if it gets worse.</li>
+          <li><strong>Low Power Mode in one click.</strong> The leaf button switches it with the optional helper, or opens Battery in System Settings if you'd rather not install it.</li>
+        </ul>
+      </div>
+      <img class="shot" src="battery.png" width="492" height="212" loading="lazy" alt="The Battery module showing 64% charge, about 3 hours remaining, and a power draw of 8.2 watts.">
     </div>
   </section>
 
@@ -241,7 +212,7 @@
     <div class="wrap">
       <h2>Get started</h2>
       <p class="intro">Download the DMG from the <a href="https://github.com/Nininunz/Clerestory/releases/latest">latest release</a>, open it and drag Clerestory to Applications. Open Clerestory from Applications; a short tour shows you around the first time. Updates arrive through <strong>Check for Updates…</strong> in the menu bar icon's menu.</p>
-      <a class="button primary" style="background: var(--accent); color: var(--accent-text);" href="https://github.com/Nininunz/Clerestory/releases/latest">Download Clerestory</a>
+      <a class="button accent" href="https://github.com/Nininunz/Clerestory/releases/latest">Download Clerestory</a>
     </div>
   </section>
 </main>
