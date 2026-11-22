@@ -84,14 +84,14 @@
   .menubar .dots { display: flex; gap: 14px; }
   .menubar .dots span { width: 34px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.45); }
   .menubar .dots span:first-child { width: 14px; }
+  /* The notch is as tall as the menu bar, with the Shelf icon and item count beside the camera. */
   .notch {
     position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 170px; height: 30px; background: #000; border-radius: 0 0 14px 14px;
+    width: 200px; height: 26px; background: #000; border-radius: 0 0 10px 10px;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 12px;
+    color: rgba(255,255,255,.9); font-size: 12px; font-weight: 600;
   }
-  .notch .count {
-    position: absolute; right: 12px; top: 7px; min-width: 18px; height: 16px; padding: 0 5px;
-    border-radius: 8px; background: rgba(255,255,255,.18); color: #fff; font-size: 11px; line-height: 16px; text-align: center; font-weight: 600;
-  }
+  .notch svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
   .panel {
     position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
     width: min(560px, 92%); padding: 14px; border-radius: 22px;
@@ -137,7 +137,7 @@
     .wrap { padding: 0 16px; }
     .hero { padding-top: 44px; }
     .screen { height: 250px; margin-top: 36px; }
-    .notch { width: 120px; }
+    .notch { width: 150px; }
     .menubar .dots span:nth-child(n+3) { display: none; }
     .cards { grid-template-columns: repeat(3, 1fr); }
     .cards .card:nth-child(4) { display: none; }
@@ -165,7 +165,7 @@
         <div class="dots"><span></span><span></span><span></span><span></span></div>
         <div class="dots"><span></span><span></span></div>
       </div>
-      <div class="notch"><span class="count">4</span></div>
+      <div class="notch"><svg viewBox="0 0 16 16"><path d="M2 9.5 3.6 4a1.2 1.2 0 0 1 1.1-.9h6.6a1.2 1.2 0 0 1 1.1.9L14 9.5v2.8a1.2 1.2 0 0 1-1.2 1.2H3.2A1.2 1.2 0 0 1 2 12.3z"/><path d="M2 9.5h3.2l.8 1.6h4l.8-1.6H14"/></svg><span>4</span></div>
       <div class="panel">
         <div class="tabs">
           <span class="tab on">Shelf</span><span class="tab">Quick Settings</span><span class="tab">Battery</span>
